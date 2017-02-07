@@ -36,14 +36,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Evaluation\Evaluator.cs" />
+    <Compile Include="EvolutionaryStrategyEngine.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Models\Log.cs" />
+    <Compile Include="Models\Object.cs" />
     <Compile Include="Mutation\MutationFunctions.cs" />
     <Compile Include="Mutation\MutationType.cs" />
     <Compile Include="Recombination\IRecombiner.cs" />
     <Compile Include="Recombination\Recombiner.cs" />
-    <Compile Include="Selection\ParentsSelector.cs" />
+    <Compile Include="Selection\RandomParentsSelector.cs" />
+    <Compile Include="Selection\SelectionType.cs" />
     <Compile Include="Selection\SurvivorsSeletor.cs" />
     <Compile Include="Utils\Arguments.cs" />
     <Compile Include="Evaluation\IEvaluator.cs" />

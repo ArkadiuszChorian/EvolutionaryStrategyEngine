@@ -5,6 +5,6 @@ namespace EvolutionaryStrategyEngine.Recombination
 {
     public interface IRecombiner
     {
-        Solution Recombine(IEnumerable<Solution> parents);
+        Solution Recombine(IList<Solution> parents);
     }
 }

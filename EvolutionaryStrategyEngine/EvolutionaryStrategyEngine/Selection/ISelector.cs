@@ -5,6 +5,6 @@ namespace EvolutionaryStrategyEngine.Selection
 {
     public interface ISelector
     {
-        IEnumerable<Solution> Select(IEnumerable<Solution> solutions, int numberOfSelectedSolutions);
+        IList<Solution> Select(IList<Solution> solutions, int numberOfSolutionsToSelect);
     }
 }

@@ -5,7 +5,7 @@ namespace EvolutionaryStrategyEngine.Recombination
 {
     public class Recombiner : IRecombiner
     {
-        public Solution Recombine(IEnumerable<Solution> parents)
+        public Solution Recombine(IList<Solution> parents)
         {
             throw new System.NotImplementedException();
         }

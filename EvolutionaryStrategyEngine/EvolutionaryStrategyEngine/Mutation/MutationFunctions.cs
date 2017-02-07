@@ -1,12 +1,13 @@
 ﻿using System;
 using EvolutionaryStrategyEngine.Models;
+using EvolutionaryStrategyEngine.Utils;
 
 namespace EvolutionaryStrategyEngine.Mutation
 {
     public static class MutationFunctions
     {
         public static Solution MutateStdDeviationsCoefficientsWithOneStep(Solution solution)
-        {
+        {           
             throw new NotImplementedException();
         }
 
