@@ -3,6 +3,7 @@ using EvolutionaryStrategyEngine.Logging;
 using EvolutionaryStrategyEngine.Mutation;
 using EvolutionaryStrategyEngine.Recombination;
 using EvolutionaryStrategyEngine.Selection;
+using EvolutionaryStrategyEngine.Utils;
 
 namespace EvolutionaryStrategyEngine
 {
@@ -15,14 +16,14 @@ namespace EvolutionaryStrategyEngine
         private ISelector _parentsSelector;
         private ISelector _survivorsSelector;
 
-        public EvolutionaryStrategyEngine()
+        public EvolutionaryStrategyEngine(AlgorithmParameters algorithmParameters)
         {
             _evaluator = new Evaluator();
             _logger = new Logger();
-            _mutator = new Mutator(MutationType.Correlated);
+            _mutator = new Mutator(algorithmParameters);
             _recombiner = new Recombiner();
-            _parentsSelector = new RandomParentsSelector();
-            _survivorsSelector = new SurvivorsSeletor();
+            _parentsSelector = new RandomParentsSelector(algorithmParameters);
+            _survivorsSelector = new SurvivorsSeletor(algorithmParameters);
         }
     }
 }

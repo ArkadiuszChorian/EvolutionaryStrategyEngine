@@ -1,31 +1,31 @@
 ﻿using System;
-using EvolutionaryStrategyEngine.Mutation;
+using EvolutionaryStrategyEngine.Utils;
 
 namespace EvolutionaryStrategyEngine.Models
 {
     public class Object
     {
-        public Object(int objectVectorSize, MutationType mutationType)
+        public Object(AlgorithmParameters algorithmParameters)
         {
-            ObjectCoefficients = new double[objectVectorSize];
+            ObjectCoefficients = new double[algorithmParameters.ObjectVectorSize];
 
-            switch (mutationType)
+            switch (algorithmParameters.TypeOfMutation)
             {
-                case MutationType.UncorrelatedNSteps:
-                    StdDeviationsCoefficients = new double[objectVectorSize];
+                case AlgorithmParameters.MutationType.UncorrelatedNSteps:
+                    StdDeviationsCoefficients = new double[algorithmParameters.ObjectVectorSize];
                     break;
-                case MutationType.Correlated:
-                    StdDeviationsCoefficients = new double[objectVectorSize];
-                    RotationsCoefficients = new double[objectVectorSize];
+                case AlgorithmParameters.MutationType.Correlated:
+                    StdDeviationsCoefficients = new double[algorithmParameters.ObjectVectorSize];
+                    RotationsCoefficients = new double[algorithmParameters.ObjectVectorSize];
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(mutationType), mutationType, null);
+                    throw new ArgumentOutOfRangeException(nameof(algorithmParameters.TypeOfMutation), algorithmParameters.TypeOfMutation, null);
             }
         }
 
         public double[] ObjectCoefficients { get; set; }
         public double[] StdDeviationsCoefficients { get; set; }
         public double[] RotationsCoefficients { get; set; }
-        public double OneStepStdDeviation { get; set; }
+        public double IndividualOneStepStdDeviation { get; set; }     
     }
 }

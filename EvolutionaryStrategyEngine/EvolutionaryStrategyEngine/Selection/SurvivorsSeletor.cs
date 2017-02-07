@@ -1,14 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EvolutionaryStrategyEngine.Models;
+using EvolutionaryStrategyEngine.Utils;
 
 namespace EvolutionaryStrategyEngine.Selection
 {
     public class SurvivorsSeletor : ISelector
     {
-        public IList<Solution> Select(IList<Solution> solutions, int numberOfSolutionsToSelect)
+        public SurvivorsSeletor(AlgorithmParameters algorithmParameters)
         {
-            return solutions.OrderByDescending(solution => solution.FitnessScore).Take(numberOfSolutionsToSelect).ToList();
+            NumberOfSurvivorsSolutionsToSelect = algorithmParameters.NumberOfSurvivorsSolutionsToSelect;
         }
+
+        public IList<Solution> Select(IList<Solution> solutions)
+        {
+            return solutions.OrderByDescending(solution => solution.FitnessScore).Take(NumberOfSurvivorsSolutionsToSelect).ToList();
+        }
+
+        public int NumberOfSurvivorsSolutionsToSelect { get; set; }
     }
 }

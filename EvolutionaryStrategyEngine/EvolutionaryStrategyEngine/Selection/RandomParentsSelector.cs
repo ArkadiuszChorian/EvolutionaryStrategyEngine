@@ -1,23 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using EvolutionaryStrategyEngine.Evaluation;
+﻿using System.Collections.Generic;
 using EvolutionaryStrategyEngine.Models;
 using EvolutionaryStrategyEngine.Utils;
 
 namespace EvolutionaryStrategyEngine.Selection
 {
     public class RandomParentsSelector : ISelector
-    {       
-        public IList<Solution> Select(IList<Solution> solutions, int numberOfSolutionsToSelect)
+    {
+        public RandomParentsSelector(AlgorithmParameters algorithmParameters)
         {
-            if (numberOfSolutionsToSelect == solutions.Count)
+            NumberOfSolutionsToSelect = algorithmParameters.NumberOfParentsSolutionsToSelect;
+        }
+
+        public IList<Solution> Select(IList<Solution> solutions)
+        {
+            if (NumberOfSolutionsToSelect == solutions.Count)
             {
                 return solutions;
             }
 
-            var selectedSolutions = new List<Solution>(numberOfSolutionsToSelect);
+            var selectedSolutions = new List<Solution>(NumberOfSolutionsToSelect);
 
-            for (var i = 0; i < numberOfSolutionsToSelect; i++)
+            for (var i = 0; i < NumberOfSolutionsToSelect; i++)
             {
                 //TODO: Solutions are taken with repetition       
                 selectedSolutions[i] = solutions[MersenneTwister.Instance.Next(solutions.Count)];
@@ -25,5 +28,7 @@ namespace EvolutionaryStrategyEngine.Selection
 
             return selectedSolutions;
         }
+
+        public int NumberOfSolutionsToSelect { get; set; }
     }
 }
