@@ -71,18 +71,18 @@ namespace EvolutionaryStrategyEngine.Utils
     public class MersenneTwister : Random
     {
         [ThreadStatic]
-        private static MersenneTwister instance;
+        private static MersenneTwister _instance;
 
         public static MersenneTwister Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new MersenneTwister(Arguments.Get<int>("seed"));
+                    _instance = new MersenneTwister(Arguments.Get<int>("seed"));
                 }
 
-                return instance;
+                return _instance;
             }
         }
 

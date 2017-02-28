@@ -10,24 +10,25 @@ namespace EvolutionaryStrategyEngine.Utils
 {
     public class Arguments
     {
-        private static readonly Regex parseExpression = new Regex(@"(?'name'[a-z][a-z0-9._]*)=(?'value'[a-z0-9._/\\\-]*|""[a-z0-9._/\\\- ]*"")", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
-        private static readonly Lazy<Arguments> instance = new Lazy<Arguments>(() => new Arguments(string.Join(" ", Environment.GetCommandLineArgs())), LazyThreadSafetyMode.PublicationOnly);
-        private static readonly Lazy<string> baseDirectory = new Lazy<string>(() => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), LazyThreadSafetyMode.PublicationOnly);
+        private static readonly Regex ParseExpression = new Regex(@"(?'name'[a-z][a-z0-9._]*)=(?'value'[a-z0-9._/\\\-]*|""[a-z0-9._/\\\- ]*"")", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+        private static readonly Lazy<Arguments> LazyInstance = new Lazy<Arguments>(() => new Arguments(string.Join(" ", Environment.GetCommandLineArgs())), LazyThreadSafetyMode.PublicationOnly);
+        private static readonly Lazy<string> LazyBaseDirectory = new Lazy<string>(() => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), LazyThreadSafetyMode.PublicationOnly);
 
-        private IDictionary<string, string> dictionary;
+        public static Arguments Instance => LazyInstance.Value;
+        public static string BaseDirectory => LazyBaseDirectory.Value;
 
-        public static string BaseDirectory => baseDirectory.Value;
-
+        private readonly IDictionary<string, string> _dictionary;
+        
         private Arguments(string argument)
         {
-            this.dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            _dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (Match match in parseExpression.Matches(argument))
+            foreach (Match match in ParseExpression.Matches(argument))
             {
                 Debug.Assert(match.Success);
                 var name = match.Groups["name"].Value;
                 var value = match.Groups["value"].Value;
-                dictionary[name] = value;
+                _dictionary[name] = value;
             }
         }
 
@@ -36,7 +37,7 @@ namespace EvolutionaryStrategyEngine.Utils
         {
             try
             {
-                return (T)Convert.ChangeType(instance.Value.dictionary[key], typeof(T));
+                return (T)Convert.ChangeType(Instance._dictionary[key], typeof(T));
             }
             catch (KeyNotFoundException)
             {
@@ -47,7 +48,7 @@ namespace EvolutionaryStrategyEngine.Utils
         public static T Get<T>(string key, T @default) where T : struct
         {
             string value;
-            if (instance.Value.dictionary.TryGetValue(key, out value))
+            if (Instance._dictionary.TryGetValue(key, out value))
             {
                 @default = (T)Convert.ChangeType(value, typeof(T));
             }
@@ -59,7 +60,7 @@ namespace EvolutionaryStrategyEngine.Utils
         {
             try
             {
-                return instance.Value.dictionary[key];
+                return Instance._dictionary[key];
             }
             catch (KeyNotFoundException)
             {
@@ -70,14 +71,14 @@ namespace EvolutionaryStrategyEngine.Utils
         public static string Get(string key, string @default)
         {
             string value;
-            return instance.Value.dictionary.TryGetValue(key, out value) ? value : @default;
+            return Instance._dictionary.TryGetValue(key, out value) ? value : @default;
         }
 
         public static T GetObject<T>(string key) where T : class
         {
             try
             {
-                var name = instance.Value.dictionary[key];
+                var name = Instance._dictionary[key];
                 Type type = null;
 
                 // FIXME: .NET Framework solution (correct):
@@ -114,7 +115,7 @@ namespace EvolutionaryStrategyEngine.Utils
             }
         }
 
-        private static void CollectAssemblies(HashSet<Assembly> to, params Assembly[] assembliesToSearch)
+        private static void CollectAssemblies(ISet<Assembly> to, params Assembly[] assembliesToSearch)
         {
             foreach (var assembly in assembliesToSearch)
             {
@@ -125,7 +126,10 @@ namespace EvolutionaryStrategyEngine.Utils
                     {
                         to.Add(Assembly.Load(refAssembly));
                     }
-                    catch { }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
             }
         }

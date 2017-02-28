@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EvolutionaryStrategyEngine.Utils
+namespace EvolutionaryStrategyEngine.Models
 {
     public class AlgorithmParameters
     {
@@ -10,25 +10,32 @@ namespace EvolutionaryStrategyEngine.Utils
             IndividualLearningRate = 1 / Math.Sqrt(2 * Math.Sqrt(objectVectorSize));
             StepThreshold = 0;
             RotationAngle = 5 * Math.PI / 180;
-            NumberOfSolutionObjects = 1;
             ObjectVectorSize = objectVectorSize;
             TypeOfMutation = MutationType.Correlated;
         }
-        public AlgorithmParameters(double globalLerningRate, double individualLearningRate, double stepThreshold, double rotationAngle, int numberOfSolutionObjects, int objectVectorSize, MutationType typeOfMutation)
-        {
+        public AlgorithmParameters(
+            double globalLerningRate, 
+            double individualLearningRate, 
+            double stepThreshold, 
+            double rotationAngle, 
+            int objectVectorSize, 
+            int numberOfNegativeMeasurePoints,
+            int numberOfDimensions, 
+            MutationType typeOfMutation)
+        {           
             GlobalLearningRate = globalLerningRate;
             IndividualLearningRate = individualLearningRate;
             StepThreshold = stepThreshold;
             RotationAngle = rotationAngle;
-            NumberOfSolutionObjects = numberOfSolutionObjects;
             ObjectVectorSize = objectVectorSize;
+            NumberOfNegativeMeasurePoints = numberOfNegativeMeasurePoints;
+            NumberOfDimensions = numberOfDimensions;
             TypeOfMutation = typeOfMutation;
         }
 
         public enum MutationType
         {
-            UncorrelatedOneGlobalStep,
-            UncorrelatedOneIndividualStep,
+            UncorrelatedOneStep,
             UncorrelatedNSteps,
             Correlated
         }
@@ -42,10 +49,11 @@ namespace EvolutionaryStrategyEngine.Utils
         public double IndividualLearningRate { get; set; }
         public double StepThreshold { get; set; }
         public double RotationAngle { get; set; }
-        public int NumberOfSolutionObjects { get; set; }
         public int ObjectVectorSize { get; set; }
         public int NumberOfParentsSolutionsToSelect { get; set; }
         public int NumberOfSurvivorsSolutionsToSelect { get; set; }
+        public int NumberOfNegativeMeasurePoints { get; set; }
+        public int NumberOfDimensions { get; set; }
         public MutationType TypeOfMutation { get; set; }      
     }
 }
